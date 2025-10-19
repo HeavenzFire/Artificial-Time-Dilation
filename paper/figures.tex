@@ -1,0 +1,32 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\begin{document}
+
+\section*{Figures: Artificial Time Dilation in RL}
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.48\textwidth}
+    \includegraphics[width=\textwidth]{../figures/d_scaling_chart.png}
+    \caption{(D)-Scaling: simulated vs. real-world time at 1x/100x/1000x.}
+    \label{fig:d_scaling}
+\end{subfigure}\hfill
+\begin{subfigure}{0.48\textwidth}
+    \includegraphics[width=\textwidth]{../figures/reward_curves.png}
+    \caption{RL performance vs. real time, with simulated steps on right axis.}
+    \label{fig:reward_curves}
+\end{subfigure}
+\caption{Visualizing artificial time dilation for RL agents.}
+\label{fig:time_dilation}
+\end{figure}
+
+\end{document}
