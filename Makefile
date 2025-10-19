@@ -3,10 +3,10 @@ VENV=.venv
 REQ=requirements.txt
 FIGS=figures/d_scaling_chart.png figures/reward_curves.png
 
-.PHONY: help setup figures clean paper web
+.PHONY: help setup figures clean paper web accelerate sweep_plots
 
 help:
-	@echo "Targets: setup, figures, paper, web, clean"
+	@echo "Targets: setup, figures, paper, web, accelerate, sweep_plots, clean"
 
 setup:
 	$(PY) -m venv $(VENV) || true
@@ -24,6 +24,12 @@ paper: paper/figures.tex figures
 
 web:
 	@echo "Open web/index.html in a browser (no build step)."
+
+accelerate:
+	$(PY) scripts/dilation_sweep.py --envs 256 --steps 500000 --log_every 10000 --runs_root /workspace/runs --seed 42
+
+sweep_plots:
+	$(PY) scripts/plot_acceleration.py --sweep_root /workspace/runs/latest_sweep --outdir /workspace/figures
 
 clean:
 	rm -f $(FIGS)
