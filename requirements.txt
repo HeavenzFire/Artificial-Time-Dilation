@@ -1,3 +1,5 @@
+matplotlib==3.9.2
+numpy==2.1.2
 # Core dependencies
 numpy>=1.21.0
 scipy>=1.7.0
