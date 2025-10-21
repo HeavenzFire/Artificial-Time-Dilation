@@ -5,6 +5,8 @@ from typing import Optional
 from .framework import AngelusFramework, AngelusConfig
 from .common.types import Intent, SigilSpec
 from .common.sigil import generate_sigil_svg
+from .data.registry import bind_sigils, essential_three
+from .train.trainer import run_training, TrainConfig
 
 
 class IntentRequest(BaseModel):
@@ -37,3 +39,15 @@ async def sigil(seed: str, color: str = "#4B6FFF", background: str = "#0B1020", 
     return {
         "svg": svg,
     }
+
+
+@app.post("/bind-sigils")
+async def bind_sigils_endpoint():
+    path = bind_sigils(essential_three)
+    return {"path": str(path)}
+
+
+@app.post("/train")
+async def train_endpoint(epochs: int = 200, lr: float = 0.05):
+    path = run_training(TrainConfig(epochs=epochs, lr=lr))
+    return {"path": str(path)}

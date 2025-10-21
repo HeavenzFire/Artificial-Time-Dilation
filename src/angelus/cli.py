@@ -4,6 +4,8 @@ from pathlib import Path
 from .framework import AngelusFramework
 from .common.types import Intent, SigilSpec
 from .common.sigil import generate_sigil_svg
+from .data.registry import bind_sigils, essential_three
+from .train.trainer import run_training, TrainConfig
 
 
 def cmd_guidance(args: argparse.Namespace) -> int:
@@ -45,6 +47,18 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--size", type=int, default=256)
     s.add_argument("--stroke", type=int, default=3)
     s.set_defaults(func=cmd_sigil)
+
+    b = sub.add_parser("bind-sigils", help="Bind canonical sigils to the local registry")
+    b.set_defaults(func=lambda args: (print(f"Saved to {bind_sigils(essential_three)}"), 0)[1])
+
+    t = sub.add_parser("train", help="Train simple sigil model")
+    t.add_argument("--epochs", type=int, default=200)
+    t.add_argument("--lr", type=float, default=0.05)
+    def _train(args: argparse.Namespace) -> int:
+        path = run_training(TrainConfig(epochs=args.epochs, lr=args.lr))
+        print(f"Model saved to {path}")
+        return 0
+    t.set_defaults(func=_train)
 
     return p
 

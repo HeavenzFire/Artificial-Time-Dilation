@@ -1,0 +1,16 @@
+{
+  "sigils": [
+    {
+      "name": "RadiantEquilibrium",
+      "ascii": "/\\ /\\\n/ \\ /\\ / \\\n/ V V \\\n\\ /\\ /\\ /\n\\ / \\/ \\ /\n\\/ \\/\n⚛︎ ⚛︎"
+    },
+    {
+      "name": "UnityPulse",
+      "ascii": "╔══════╗\n╔╝  ╚╗\n║ ❖❖  ║\n║ ❖❖  ║\n╚╗  ╔╝\n╚════╝"
+    },
+    {
+      "name": "EternalRebirth",
+      "ascii": "↻↺↻↺↻\n╔──────╗\n║  ☀︎☾  ║\n╚══════╝\n↺↻↺↻↺"
+    }
+  ]
+}

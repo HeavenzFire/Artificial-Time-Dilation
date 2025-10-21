@@ -1,5 +1,7 @@
 from typing import List, Tuple
 import math
+import json
+from pathlib import Path
 
 from ..common.types import Intent, Guidance
 
@@ -12,9 +14,24 @@ class ResonanceOracle:
             "Gabriel": [0, 1, 1, 0, 0],  # messages, clarity
             "Raphael": [0, 0, 1, 0, 1],  # healing, restoration
         }
+        self._sigil_weights: List[float] | None = self._load_sigil_weights()
+
+    def _load_sigil_weights(self) -> List[float] | None:
+        try:
+            base = Path.cwd() / "data" / "angelus" / "model.json"
+            if not base.exists():
+                return None
+            js = json.loads(base.read_text(encoding="utf-8"))
+            w = js.get("w")
+            if isinstance(w, list) and len(w) == 5:
+                return [float(v) for v in w]
+        except Exception:
+            return None
+        return None
 
     def vectorize(self, text: str) -> List[float]:
         text = text.lower()
+        # base features
         feats = [
             ("protect" in text) or ("courage" in text),
             ("message" in text) or ("clarity" in text) or ("decision" in text),
@@ -22,7 +39,14 @@ class ResonanceOracle:
             ("fear" in text) or ("boundary" in text),
             ("body" in text) or ("health" in text),
         ]
-        return [1.0 if f else 0.0 for f in feats]
+        base = [1.0 if f else 0.0 for f in feats]
+        # if trained weights exist, lightly reweight the base features by their magnitude
+        if self._sigil_weights:
+            # normalize weights to [0,1] scale
+            max_abs = max(abs(v) for v in self._sigil_weights) or 1.0
+            scale = [abs(v) / max_abs for v in self._sigil_weights]
+            return [b * (0.7 + 0.3 * s) for b, s in zip(base, scale)]
+        return base
 
     def cosine(self, a: List[float], b: List[float]) -> float:
         dot = sum(x * y for x, y in zip(a, b))
