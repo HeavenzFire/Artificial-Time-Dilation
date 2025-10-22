@@ -66,8 +66,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "time-dilation-demo=src.cli:main",
-            "time-dilation-web=demos.web_demo:main",
+            "angelus=angelus.cli:main",
         ],
     },
     include_package_data=True,
